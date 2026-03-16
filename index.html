@@ -1,67 +1,809 @@
-a<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Benjamin Bray | Personal Website</title>
+  <title>Your Name — Student Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
   <style>
+    /* ─── TOKENS ──────────────────────────────────────────────── */
+    :root {
+      --cream:   #f5f0e8;
+      --ink:     #1a1612;
+      --rust:    #b84a2a;
+      --sage:    #4a6741;
+      --sand:    #d9cdb8;
+      --muted:   #7a6e62;
+      --card-bg: #fffdf8;
+
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --mono:  'DM Mono', 'Courier New', monospace;
+    }
+
+    /* ─── RESET ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 50px auto;
-      padding: 0 20px;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--serif);
+      line-height: 1.7;
+      overflow-x: hidden;
     }
 
-    h1 {
-      color: #007acc;
+    a { color: var(--rust); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+
+    /* ─── NOISE OVERLAY ───────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .5;
     }
 
+    /* ─── NAV ─────────────────────────────────────────────────── */
     nav {
-      margin-top: 20px;
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: rgba(245,240,232,.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--sand);
     }
 
-    nav a {
-      margin-right: 15px;
-      text-decoration: none;
-      color: #007acc;
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--muted);
+      letter-spacing: .08em;
     }
 
-    .footer {
-      margin-top: 60px;
-      font-size: 0.9em;
-      color: #777;
-      border-top: 1px solid #ddd;
-      padding-top: 20px;
+    .nav-links {
+      display: flex; gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--rust); text-decoration: none; }
+
+    /* ─── HERO ────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 2.5rem 4rem;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-text { animation: fadeUp .8s ease both; }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: .8rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      letter-spacing: -.02em;
+    }
+
+    .hero-tagline {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      max-width: 36ch;
+    }
+
+    .hero-bio {
+      font-size: .95rem;
+      color: var(--ink);
+      max-width: 42ch;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    /* Replace with an actual photo — keep aspect ratio 3/4 or 1/1 */
+    .hero-photo {
+      animation: fadeUp .8s .2s ease both;
+      position: relative;
+    }
+
+    .hero-photo img {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 4px;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+      filter: sepia(.08) contrast(1.04);
+      border: 1px solid var(--sand);
+    }
+
+    /* placeholder when no photo yet */
+    .photo-placeholder {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 3/4;
+      background: var(--sand);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: .75rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      border: 2px dashed #c4b89e;
+    }
+    .photo-placeholder svg { opacity: .4; }
+
+    .hero-links {
+      display: flex; flex-wrap: wrap; gap: .75rem;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: var(--mono);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .7rem 1.4rem;
+      border-radius: 2px;
+      transition: all .2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+    }
+    .btn-primary:hover { background: var(--rust); text-decoration: none; color: var(--cream); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+    }
+    .btn-outline:hover { background: var(--ink); color: var(--cream); text-decoration: none; }
+
+    /* ─── SECTION WRAPPER ─────────────────────────────────────── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: .75rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: .6rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 3rem;
+      line-height: 1.15;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--sand);
+      margin: 0 2.5rem;
+    }
+
+    /* ─── RESEARCH / INTERESTS ────────────────────────────────── */
+    #research .interests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .interest-card {
+      background: var(--card-bg);
+      border: 1px solid var(--sand);
+      border-radius: 4px;
+      padding: 1.75rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .interest-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(26,22,18,.08);
+    }
+
+    .interest-icon {
+      font-size: 1.6rem;
+      margin-bottom: .75rem;
+    }
+
+    .interest-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .interest-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── PUBLICATIONS ────────────────────────────────────────── */
+    #publications .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .pub-item {
+      background: var(--card-bg);
+      border: 1px solid var(--sand);
+      border-radius: 4px;
+      padding: 1.75rem 2rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.25rem;
+      align-items: start;
+      transition: box-shadow .2s;
+    }
+    .pub-item:hover { box-shadow: 0 6px 20px rgba(26,22,18,.07); }
+
+    .pub-year {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--rust);
+      padding-top: .2rem;
+      min-width: 3.5rem;
+    }
+
+    .pub-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .3rem;
+    }
+
+    .pub-authors {
+      font-size: .88rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: .4rem;
+    }
+
+    .pub-venue {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .05em;
+    }
+
+    .pub-links {
+      display: flex; gap: .75rem; margin-top: .75rem;
+    }
+
+    .tag-link {
+      font-family: var(--mono);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .6rem;
+      background: var(--sand);
+      border-radius: 2px;
+      color: var(--ink);
+      transition: background .2s;
+    }
+    .tag-link:hover { background: var(--rust); color: var(--cream); text-decoration: none; }
+
+    /* ─── PROJECTS ────────────────────────────────────────────── */
+    #projects .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--sand);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(26,22,18,.1);
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--sand);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
+
+    .project-body { padding: 1.5rem; }
+
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+      margin-bottom: .75rem;
+    }
+
+    .project-tag {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .08em;
+      padding: .2rem .5rem;
+      background: rgba(74,103,65,.12);
+      color: var(--sage);
+      border-radius: 2px;
+    }
+
+    .project-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .project-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .project-links { display: flex; gap: .75rem; }
+
+    /* ─── EDUCATION / CV ──────────────────────────────────────── */
+    #cv .cv-entries {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cv-entry {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--sand);
+    }
+    .cv-entry:first-child { border-top: 1px solid var(--sand); }
+
+    .cv-period {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--muted);
+      padding-top: .15rem;
+    }
+
+    .cv-entry h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .2rem;
+    }
+
+    .cv-entry .institution {
+      font-style: italic;
+      color: var(--rust);
+      font-size: .9rem;
+      margin-bottom: .4rem;
+    }
+
+    .cv-entry p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── CONTACT ─────────────────────────────────────────────── */
+    #contact {
+      background: var(--ink);
+      color: var(--cream);
+      max-width: 100%;
+      padding: 5rem 2.5rem;
+    }
+
+    #contact .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    #contact .section-label { color: #c89070; }
+    #contact .section-title { color: var(--cream); margin-bottom: 1rem; }
+
+    #contact p {
+      font-size: .95rem;
+      color: #c4b8a8;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .contact-link-row {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--cream);
+    }
+
+    .contact-link-row svg { opacity: .6; flex-shrink: 0; }
+    .contact-link-row a { color: #c89070; }
+    .contact-link-row a:hover { color: var(--cream); }
+
+    /* ─── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid #2e2820;
+      text-align: center;
+      padding: 1.5rem 2.5rem;
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: #6a6058;
+      letter-spacing: .08em;
+    }
+
+    /* ─── ANIMATIONS ──────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+
+      #hero {
+        grid-template-columns: 1fr;
+        padding: 5rem 1.25rem 3rem;
+        text-align: center;
+      }
+      .hero-photo { order: -1; display: flex; justify-content: center; }
+      .hero-bio, .hero-tagline { max-width: 100%; }
+      .hero-links { justify-content: center; }
+
+      section { padding: 3.5rem 1.25rem; }
+
+      .cv-entry { grid-template-columns: 1fr; gap: .4rem; }
+
+      #contact .inner { grid-template-columns: 1fr; gap: 2.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <h1>Benjamin Bray</h1>
-  <p>Hi! I'm a data-driven environmental researcher and outdoor guide with a passion for coastal ecosystems, GIS mapping, and sustainability. I use R, Python, and geospatial tools to understand how humans interact with marine and terrestrial environments.</p>
-
+  <!-- ── NAV ──────────────────────────────────────────────────── -->
   <nav>
-    <a href="https://github.com/benbray03" target="_blank">GitHub</a>
-    <a href="mailto:pbray@ucsb.edu">Email</a>
-    <a href="resume.pdf" target="_blank">Resume</a> <!-- optional -->
+    <span class="nav-logo">YN // researcher</span>
+    <ul class="nav-links">
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Papers</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#cv">CV</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
   </nav>
 
-  <h2>About Me</h2>
-  <p>I currently study Environmental Studies and Data Science at UCSB, and I've worked on projects ranging from kelp forest restoration to fire ecology and rotational grazing. I’m interested in applied research that connects science with community-based action.</p>
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">PhD Candidate · University Name · Dept of ___</p>
+      <h1 class="hero-name">Your<br>Full Name</h1>
+      <p class="hero-tagline">One sentence that captures your research focus.</p>
+      <p class="hero-bio">
+        A short bio paragraph — who you are, what you study, and what drives your work.
+        Keep it conversational and human. Two or three sentences is plenty here.
+      </p>
+      <div class="hero-links">
+        <a href="cv.pdf" class="btn btn-primary">
+          <!-- download icon -->
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CV
+        </a>
+        <a href="mailto:you@university.edu" class="btn btn-outline">Email Me</a>
+        <a href="https://github.com/yourusername" class="btn btn-outline">GitHub</a>
+        <a href="https://scholar.google.com" class="btn btn-outline">Scholar</a>
+      </div>
+    </div>
 
-  <h2>Projects</h2>
-  <ul>
-    <li><strong>Kelp Restoration Dashboard</strong> – Interactive mapping tool to visualize kelp decline and restoration potential (R + Leaflet)</li>
-    <li><strong>Shorebird Time Series Forecasting</strong> – Used SARIMA models to predict bird population dynamics</li>
-    <li><strong>Fire Stewardship Report</strong> – Cultural and ecological analysis comparing Chumash practices with federal burn programs</li>
-  </ul>
+    <div class="hero-photo">
+      <!-- Replace the placeholder div below with:
+           <img src="photo.jpg" alt="Your Name" />
+      -->
+      <div class="photo-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Add your photo here</span>
+      </div>
+    </div>
+  </section>
 
-  <div class="footer">
-    &copy; 2025 Benjamin Bray • Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
-  </div>
+  <hr class="divider" />
+
+  <!-- ── RESEARCH INTERESTS ───────────────────────────────────── -->
+  <section id="research">
+    <p class="section-label">What I study</p>
+    <h2 class="section-title">Research Interests</h2>
+
+    <div class="interests-grid">
+
+      <!-- ✏️ Duplicate / edit these cards -->
+      <div class="interest-card">
+        <div class="interest-icon">🔬</div>
+        <h3>Research Area One</h3>
+        <p>A brief description of this area and why it matters to your work. One or two sentences.</p>
+      </div>
+
+      <div class="interest-card">
+        <div class="interest-icon">📊</div>
+        <h3>Research Area Two</h3>
+        <p>A brief description of this area and why it matters to your work. One or two sentences.</p>
+      </div>
+
+      <div class="interest-card">
+        <div class="interest-icon">🧠</div>
+        <h3>Research Area Three</h3>
+        <p>A brief description of this area and why it matters to your work. One or two sentences.</p>
+      </div>
+
+      <div class="interest-card">
+        <div class="interest-icon">💡</div>
+        <h3>Research Area Four</h3>
+        <p>A brief description of this area and why it matters to your work. One or two sentences.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── PUBLICATIONS ──────────────────────────────────────────── -->
+  <section id="publications">
+    <p class="section-label">Academic work</p>
+    <h2 class="section-title">Publications</h2>
+
+    <div class="pub-list">
+
+      <!-- ✏️ Duplicate / edit these entries -->
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div>
+          <div class="pub-title">Title of Your Paper or Thesis Chapter Goes Here</div>
+          <div class="pub-authors">Your Name, Co-Author One, Co-Author Two</div>
+          <div class="pub-venue">Journal / Conference Name, Vol. X, No. Y</div>
+          <div class="pub-links">
+            <a href="#" class="tag-link">PDF</a>
+            <a href="#" class="tag-link">arXiv</a>
+            <a href="#" class="tag-link">Code</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2024</div>
+        <div>
+          <div class="pub-title">Another Paper, Poster, or Preprint Title</div>
+          <div class="pub-authors">Your Name, Advisor Name</div>
+          <div class="pub-venue">Workshop / Conference · City, Country</div>
+          <div class="pub-links">
+            <a href="#" class="tag-link">PDF</a>
+            <a href="#" class="tag-link">Slides</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">Undergraduate Thesis or Capstone Project Title</div>
+          <div class="pub-authors">Your Name</div>
+          <div class="pub-venue">University Name · Honors Thesis</div>
+          <div class="pub-links">
+            <a href="#" class="tag-link">PDF</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── PROJECTS ──────────────────────────────────────────────── -->
+  <section id="projects">
+    <p class="section-label">What I've built</p>
+    <h2 class="section-title">Projects</h2>
+
+    <div class="projects-grid">
+
+      <!-- ✏️ Duplicate / edit these cards -->
+      <div class="project-card">
+        <!-- Replace with: <img src="project1.png" alt="Project name" class="project-thumb" /> -->
+        <div class="project-thumb">screenshot / demo gif</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">ML</span>
+          </div>
+          <h3>Project Name One</h3>
+          <p>What does it do? Why did you build it? What did you learn? Keep this to 2–3 sentences.</p>
+          <div class="project-links">
+            <a href="#" class="tag-link">GitHub</a>
+            <a href="#" class="tag-link">Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb">screenshot / demo gif</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">R</span>
+            <span class="project-tag">Statistics</span>
+          </div>
+          <h3>Project Name Two</h3>
+          <p>What does it do? Why did you build it? What did you learn? Keep this to 2–3 sentences.</p>
+          <div class="project-links">
+            <a href="#" class="tag-link">GitHub</a>
+            <a href="#" class="tag-link">Report</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb">screenshot / demo gif</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Web</span>
+            <span class="project-tag">Visualization</span>
+          </div>
+          <h3>Project Name Three</h3>
+          <p>What does it do? Why did you build it? What did you learn? Keep this to 2–3 sentences.</p>
+          <div class="project-links">
+            <a href="#" class="tag-link">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── CV / EDUCATION ────────────────────────────────────────── -->
+  <section id="cv">
+    <p class="section-label">Background</p>
+    <h2 class="section-title">Education &amp; Experience</h2>
+
+    <div class="cv-entries">
+
+      <!-- ✏️ Duplicate / edit these entries -->
+      <div class="cv-entry">
+        <div class="cv-period">2023 – present</div>
+        <div>
+          <h3>PhD in Your Field</h3>
+          <div class="institution">University Name, City, State</div>
+          <p>Advisor: Prof. Advisor Name. Brief description of your dissertation focus or lab.</p>
+        </div>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-period">Summer 2024</div>
+        <div>
+          <h3>Research Intern</h3>
+          <div class="institution">Organization / Lab Name</div>
+          <p>What you worked on, what methods you used, what you contributed.</p>
+        </div>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-period">2019 – 2023</div>
+        <div>
+          <h3>B.S. in Your Field</h3>
+          <div class="institution">Undergraduate University, City, State</div>
+          <p>Graduated with honors. Thesis: "Thesis Title Here." GPA or other note if desired.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <br />
+    <a href="cv.pdf" class="btn btn-primary" style="display:inline-flex;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Full CV (PDF)
+    </a>
+  </section>
+
+  <!-- ── CONTACT ───────────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="inner">
+      <div>
+        <p class="section-label">Get in touch</p>
+        <h2 class="section-title">Let's Connect</h2>
+        <p>
+          I'm always happy to discuss research, collaborations, or just ideas.
+          The best way to reach me is by email — I try to respond within a few days.
+        </p>
+        <a href="mailto:you@university.edu" class="btn" style="background:var(--rust);color:var(--cream);">
+          Send an Email
+        </a>
+      </div>
+
+      <div class="contact-links">
+
+        <!-- ✏️ Update each link href and text -->
+        <div class="contact-link-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <a href="mailto:you@university.edu">you@university.edu</a>
+        </div>
+
+        <div class="contact-link-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <a href="https://github.com/yourusername">github.com/yourusername</a>
+        </div>
+
+        <div class="contact-link-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          <a href="https://linkedin.com/in/yourprofile">linkedin.com/in/yourprofile</a>
+        </div>
+
+        <div class="contact-link-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <a href="https://scholar.google.com">Google Scholar</a>
+        </div>
+
+        <div class="contact-link-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Department of ___, Room ___<br>University Name, City, ST 00000</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Your Name · Built with plain HTML &amp; CSS · Hosted on GitHub Pages</p>
+  </footer>
 
 </body>
 </html>
